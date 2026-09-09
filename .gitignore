@@ -1,2 +1,7 @@
 # macOS
 .DS_Store
+
+# local tooling
+.python-version
+__pycache__/
+*.pyc

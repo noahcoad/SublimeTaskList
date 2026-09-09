@@ -19,9 +19,17 @@
 								"command": "edit_settings",
 								"args": {
 									"base_file": "${packages}/TaskList/TaskList.sublime-settings",
-									"default": "{\n$0\n}\n"
+									"default": "{\n\t$0\n}\n"
 								},
 								"caption": "Settings"
+							},
+							{
+								"command": "edit_settings",
+								"args": {
+									"base_file": "${packages}/TaskList/Default.sublime-keymap",
+									"default": "[\n\t$0\n]\n"
+								},
+								"caption": "Key Bindings"
 							},
 							{ "caption": "-" }
 						]

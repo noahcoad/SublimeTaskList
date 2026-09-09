@@ -1,7 +1,13 @@
 {
 	// extended set of emoji icons
-	"icons": ["✡️", "✅", "🅿️", "✴️", "🆘"]
+	"icons": ["⚛️", "✅", "🅿️", "✴️", "🆘"]
 
 	// base icons
-	// "icons": ["✡️", "✅"]
+	// "icons": ["⚛️", "✅"]
+
+	// other "to do" icons to try in the first slot:
+	//   🟣  purple dot      U+1F7E3
+	//   🟪  purple square   U+1F7EA
+	//   ✔️  grey checkmark  U+2714 U+FE0F
+	// e.g. "icons": ["🟣", "✅", "🅿️", "✴️", "🆘"]
 }

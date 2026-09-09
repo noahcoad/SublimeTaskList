@@ -1,0 +1,12 @@
+Task List 0.1.1
+===============
+
+- The default "to do" icon changed from ✡️ to ⚛️.
+
+  If you have existing files using ✡️, either add it back to the "icons" list
+  in your user settings (Preferences > Package Settings > Task List > Settings),
+  or find/replace ✡️ with ⚛️ in those files.
+
+- Added a "Key Bindings" entry under Preferences > Package Settings > Task List,
+  plus Settings and Key Bindings entries in the command palette. No key binding
+  is enabled by default; copy the suggested one to the user side.

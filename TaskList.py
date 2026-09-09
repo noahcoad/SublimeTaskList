@@ -44,10 +44,3 @@ class ToggleTaskListCommand(sublime_plugin.TextCommand):
 				# insert the first icon
 				else:
 					self.view.insert(edit, pos, icons[0] + " ")
-
-
-# p.s. Yes, I'm using hard tabs for indentation.  bite me =P
-# set tabs to whatever level of indentation you like in your editor
-# for crying out loud, at least they're consistent here, and use
-# the ST3 command "Indentation: Convert to Spaces", which will convert
-# to spaces if you really need to be part of the 'soft tabs only' crowd =)

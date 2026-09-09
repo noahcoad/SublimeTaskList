@@ -1,0 +1,6 @@
+[
+	// Task List ships no key binding by default, to avoid clobbering yours.
+	// Copy the line below to the right (user) side to enable it.
+
+	// { "keys": ["super+alt+t"], "command": "toggle_task_list" },
+]
