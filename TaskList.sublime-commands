@@ -7,7 +7,7 @@
 		"caption": "Preferences: Task List Settings",
 		"command": "edit_settings",
 		"args": {
-			"base_file": "${packages}/TaskList/TaskList.sublime-settings",
+			"base_file": "${packages}/Task List/TaskList.sublime-settings",
 			"default": "{\n\t$0\n}\n"
 		}
 	},
@@ -15,7 +15,7 @@
 		"caption": "Preferences: Task List Key Bindings",
 		"command": "edit_settings",
 		"args": {
-			"base_file": "${packages}/TaskList/Default.sublime-keymap",
+			"base_file": "${packages}/Task List/Default.sublime-keymap",
 			"default": "[\n\t$0\n]\n"
 		}
 	}
