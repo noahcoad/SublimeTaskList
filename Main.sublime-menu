@@ -30,8 +30,7 @@
 									"default": "[\n\t$0\n]\n"
 								},
 								"caption": "Key Bindings"
-							},
-							{ "caption": "-" }
+							}
 						]
 					}
 				]
