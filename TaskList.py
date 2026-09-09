@@ -5,7 +5,10 @@
 # https://github.com/noahcoad/SublimeTaskList
 #
 
-import sublime, sublime_plugin
+import re, sublime, sublime_plugin
+
+# markdown line prefixes the icon should go after: headers, bullets, ordered lists, blockquotes
+PREFIX = re.compile(r'(?:#{1,6}|[-*+>]|\d+[.)])[ \t]+')
 
 class ToggleTaskListCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
@@ -21,6 +24,12 @@ class ToggleTaskListCommand(sublime_plugin.TextCommand):
 
 				# get the position of the first non-whitespace character
 				pos = r.begin() + next((i for i, c in enumerate(t) if c != ' ' and c != '\t'), len(t))
+
+				# skip past any markdown prefixes (nested bullets/quotes) so the icon lands after them
+				while True:
+					m = PREFIX.match(self.view.substr(sublime.Region(pos, r.end())))
+					if not m: break
+					pos += m.end()
 
 				# text from first non-white to end
 				line = self.view.substr(sublime.Region(pos, r.end()))

@@ -22,7 +22,15 @@ clears it:
 ⚛️ to do → ✅ done → 🅿️ in progress → ✴️ highlight → 🆘 error → *(none)*
 
 Works on multiple lines and multiple selections at once, and keeps the icon after any leading
-indentation.
+indentation. Markdown prefixes are preserved too — the icon lands after headers, bullets, ordered
+list numbers, and blockquote markers:
+
+```
+## ✅ Header
+- ⚛️ bullet
+1. ⚛️ ordered item
+> - ✅ nested quote + bullet
+```
 
 ## Key Bindings
 
