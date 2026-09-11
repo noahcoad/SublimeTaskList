@@ -16,10 +16,10 @@ Comment*, but it cycles through a set of task icons.
 
 ## Usage
 
-Run **Toggle Task List** from the command palette. Each press advances the line to the next icon, then
+Run **Task List: Toggle** from the command palette. Each press advances the line to the next icon, then
 clears it:
 
-⚛️ to do → ✅ done → 🅿️ in progress → ✴️ highlight → 🆘 error → *(none)*
+⚛️ to do → 🅿️ in progress → ✴️ highlight → 🆘 error → ✅ done → *(none)*
 
 Works on multiple lines and multiple selections at once, and keeps the icon after any leading
 indentation. Markdown prefixes are preserved too — the icon lands after headers, bullets, ordered
@@ -32,20 +32,37 @@ list numbers, and blockquote markers:
 > - ✅ nested quote + bullet
 ```
 
+## Sorting
+
+**Task List: Sort** puts a list in icon order — the same order the toggle cycles through, so open work
+rises to the top and done work sinks to the bottom.
+
+With a selection it sorts the selected lines. With just a cursor it finds the list on its own, growing
+up and down over the run of task lines the cursor is in (or next to). Lines with no icon sort to the
+end, same-icon lines keep their relative order, indented lines travel with the item above them, and
+ordered-list numbers get rewritten so `1. 2. 3.` stays ascending.
+
+```
+1. ⚛️ update architecture diagram        1. 🅿️ get Figma ESC
+2. ✅ order parts                   →    2. ⚛️ update architecture diagram
+3. 🅿️ get Figma ESC                      3. ✅ order parts
+```
+
 ## Key Bindings
 
-None ships enabled, so nothing you already use gets clobbered. Open **Preferences > Package Settings >
-Task List > Key Bindings** and copy the suggested binding from the left pane to your own on the right:
+None ship enabled, so nothing you already use gets clobbered. Open **Preferences > Package Settings >
+Task List > Key Bindings** and copy the suggested bindings from the left pane to your own on the right:
 
 ```json
-{ "keys": ["super+alt+t"], "command": "toggle_task_list" }
+{ "keys": ["super+alt+t"], "command": "toggle_task_list" },
+{ "keys": ["super+alt+s"], "command": "sort_task_list" }
 ```
 
 ## Settings
 
-**Preferences > Package Settings > Task List > Settings** — the `icons` list is the cycle, in order.
-The first entry is the "to do" icon you'll see most; 🟣, 🟪, and ✔️ all work well there, as does any
-other emoji.
+**Preferences > Package Settings > Task List > Settings** — the `icons` list is both the toggle cycle
+and the sort order. The first entry is the "to do" icon you'll see most; 🟣, 🟪, and ✔️ all work well
+there, as does any other emoji.
 
 Both Settings and Key Bindings are in the command palette too, as *Preferences: Task List …*.
 

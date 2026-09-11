@@ -1,6 +1,7 @@
 {
 	// extended set of emoji icons
-	"icons": ["⚛️", "✅", "🅿️", "✴️", "🆘"]
+	// this is also the sort order used by "Task List: Sort"
+	"icons": ["⚛️", "🅿️", "✴️", "🆘", "✅"]
 
 	// base icons
 	// "icons": ["⚛️", "✅"]
@@ -9,5 +10,5 @@
 	//   🟣  purple dot      U+1F7E3
 	//   🟪  purple square   U+1F7EA
 	//   ✔️  grey checkmark  U+2714 U+FE0F
-	// e.g. "icons": ["🟣", "✅", "🅿️", "✴️", "🆘"]
+	// e.g. "icons": ["🟣", "🅿️", "✴️", "🆘", "✅"]
 }

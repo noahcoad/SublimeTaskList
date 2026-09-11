@@ -1,7 +1,11 @@
 [
 	{
-		"caption": "Toggle Task List",
+		"caption": "Task List: Toggle",
 		"command": "toggle_task_list"
+	},
+	{
+		"caption": "Task List: Sort",
+		"command": "sort_task_list"
 	},
 	{
 		"caption": "Preferences: Task List Settings",

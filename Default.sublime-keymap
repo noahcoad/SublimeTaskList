@@ -1,6 +1,7 @@
 [
-	// Task List ships no key binding by default, to avoid clobbering yours.
-	// Copy the line below to the right (user) side to enable it.
+	// Task List ships no key bindings by default, to avoid clobbering yours.
+	// Copy the lines below to the right (user) side to enable them.
 
 	// { "keys": ["super+alt+t"], "command": "toggle_task_list" },
+	// { "keys": ["super+alt+s"], "command": "sort_task_list" },
 ]
