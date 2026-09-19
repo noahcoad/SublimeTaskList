@@ -1,7 +1,13 @@
 {
 	// extended set of emoji icons
 	// this is also the sort order used by "Task List: Sort"
-	"icons": ["⚛️", "🅿️", "✴️", "🆘", "✅"]
+	"icons": ["⚛️", "🅿️", "✴️", "🆘", "✅"],
+
+	// what each icon means, paired with "icons" above to build "Task List: Insert Legend"
+	"legend_labels": ["to do", "in progress", "highlight", "error", "done"],
+
+	// what goes between the legend entries
+	"legend_separator": " → "
 
 	// base icons
 	// "icons": ["⚛️", "✅"]

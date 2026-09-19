@@ -8,6 +8,10 @@
 		"command": "sort_task_list"
 	},
 	{
+		"caption": "Task List: Insert Legend",
+		"command": "insert_task_list_legend"
+	},
+	{
 		"caption": "Preferences: Task List Settings",
 		"command": "edit_settings",
 		"args": {

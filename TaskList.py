@@ -73,6 +73,18 @@ class ToggleTaskListCommand(sublime_plugin.TextCommand):
 				else:
 					self.view.insert(edit, pos, icons[0] + " ")
 
+class InsertTaskListLegendCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		s = sublime.load_settings("TaskList.sublime-settings")
+		icons, labels, sep = s.get('icons'), s.get('legend_labels') or [], s.get('legend_separator') or " "
+
+		# pairs up icons with their labels, so the legend always matches the toggle cycle
+		legend = sep.join(icon + " " + label for icon, label in zip(icons, labels))
+		if not legend: return
+
+		# back to front, so earlier inserts don't shift later regions
+		for r in sorted(self.view.sel(), key=lambda r: -r.begin()): self.view.replace(edit, r, legend)
+
 class SortTaskListCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		icons = get_icons()
