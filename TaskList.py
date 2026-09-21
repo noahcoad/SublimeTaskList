@@ -13,8 +13,16 @@ PREFIX = re.compile(r'(?:#{1,6}|[-*+>]|\d+[.)])[ \t]+')
 # ordered list number, so sorting can keep 1. 2. 3. ascending
 ORDERED = re.compile(r'^([ \t]*)(\d+)([.)])')
 
+def load_icons():
+	"""-> [(icon, label)] ; entries are {"icon": .., "label": ..}, or a bare icon string"""
+	pairs = []
+	for e in sublime.load_settings("TaskList.sublime-settings").get('icons') or []:
+		if isinstance(e, str): pairs.append((e, ""))
+		elif isinstance(e, dict) and e.get('icon'): pairs.append((e['icon'], e.get('label') or ""))
+	return pairs
+
 def get_icons():
-	return sublime.load_settings("TaskList.sublime-settings").get('icons')
+	return [icon for icon, label in load_icons()]
 
 def split_line(text, icons):
 	"""-> (indent, icon_index) ; icon_index is -1 when the line has no task icon"""
@@ -75,11 +83,10 @@ class ToggleTaskListCommand(sublime_plugin.TextCommand):
 
 class InsertTaskListLegendCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
-		s = sublime.load_settings("TaskList.sublime-settings")
-		icons, labels, sep = s.get('icons'), s.get('legend_labels') or [], s.get('legend_separator') or " "
+		sep = sublime.load_settings("TaskList.sublime-settings").get('legend_separator') or " "
 
-		# pairs up icons with their labels, so the legend always matches the toggle cycle
-		legend = sep.join(icon + " " + label for icon, label in zip(icons, labels))
+		# each icon carries its own label, so the legend can't drift from the toggle cycle
+		legend = sep.join(icon + " " + label for icon, label in load_icons() if label)
 		if not legend: return
 
 		# back to front, so earlier inserts don't shift later regions

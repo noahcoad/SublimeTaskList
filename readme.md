@@ -56,8 +56,11 @@ ordered-list numbers get rewritten so `1. 2. 3.` stays ascending.
 ⚛️ to do → 🅿️ in progress → ✴️ highlight → 🆘 error → ✅ done
 ```
 
-It's built from `icons` paired with `legend_labels`, joined by `legend_separator`, so it stays in sync
-with whatever icons you've set.
+Each icon carries its own `label`, so the legend can't drift from the toggle cycle. `legend_separator`
+sets what goes between the entries; an icon with no label is left out.
+
+The labels are yours to reword — they're only what the legend prints, so rename them to whatever your
+files call things: `underway`, `parked`, `waiting`, `blocked`, `completed`.
 
 ## Key Bindings
 
@@ -72,8 +75,17 @@ Task List > Key Bindings** and copy the suggested bindings from the left pane to
 ## Settings
 
 **Preferences > Package Settings > Task List > Settings** — the `icons` list is both the toggle cycle
-and the sort order. The first entry is the "to do" icon you'll see most; 🟣, 🟪, and ✔️ all work well
-there, as does any other emoji. `legend_labels` and `legend_separator` control the inserted legend.
+and the sort order, and each entry pairs an icon with the `label` the legend uses for it:
+
+```json
+"icons": [
+	{ "icon": "⚛️", "label": "to do" },
+	{ "icon": "✅", "label": "done" }
+]
+```
+
+The first entry is the "to do" icon you'll see most; 🟣, 🟪, and ✔️ all work well there, as does any
+other emoji. A bare string (`"icons": ["⚛️", "✅"]`) works too — it just won't appear in the legend.
 
 Both Settings and Key Bindings are in the command palette too, as *Preferences: Task List …*.
 

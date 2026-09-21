@@ -1,20 +1,23 @@
 {
-	// extended set of emoji icons
-	// this is also the sort order used by "Task List: Sort"
-	"icons": ["⚛️", "🅿️", "✴️", "🆘", "✅"],
-
-	// what each icon means, paired with "icons" above to build "Task List: Insert Legend"
-	"legend_labels": ["to do", "in progress", "highlight", "error", "done"],
+	// the toggle cycle, in order -- also the sort order used by "Task List: Sort"
+	// each "label" explains its icon in "Task List: Insert Legend" -- reword them to taste,
+	// e.g. underway / parked / waiting / blocked / completed
+	"icons": [
+		{ "icon": "⚛️", "label": "to do" },
+		{ "icon": "🅿️", "label": "in progress" },
+		{ "icon": "✴️", "label": "highlight" },
+		{ "icon": "🆘", "label": "error" },
+		{ "icon": "✅", "label": "done" }
+	],
 
 	// what goes between the legend entries
 	"legend_separator": " → "
 
-	// base icons
+	// a bare string works too, for an icon you don't want in the legend
 	// "icons": ["⚛️", "✅"]
 
 	// other "to do" icons to try in the first slot:
 	//   🟣  purple dot      U+1F7E3
 	//   🟪  purple square   U+1F7EA
 	//   ✔️  grey checkmark  U+2714 U+FE0F
-	// e.g. "icons": ["🟣", "🅿️", "✴️", "🆘", "✅"]
 }
