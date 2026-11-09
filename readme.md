@@ -43,8 +43,8 @@ end, same-icon lines keep their relative order, indented lines travel with the i
 ordered-list numbers get rewritten so `1. 2. 3.` stays ascending.
 
 ```
-1. ⚛️ update architecture diagram        1. 🅿️ get Figma ESC
-2. ✅ order parts                   →    2. ⚛️ update architecture diagram
+1. ⚛️ update architecture diagram        1. ⚛️ update architecture diagram
+2. ✅ order parts                   →    2. 🅿️ get Figma ESC
 3. 🅿️ get Figma ESC                      3. ✅ order parts
 ```
 
