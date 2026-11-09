@@ -90,7 +90,13 @@ class InsertTaskListLegendCommand(sublime_plugin.TextCommand):
 		if not legend: return
 
 		# back to front, so earlier inserts don't shift later regions
-		for r in sorted(self.view.sel(), key=lambda r: -r.begin()): self.view.replace(edit, r, legend)
+		for r in sorted(self.view.sel(), key=lambda r: -r.begin()):
+			# a selection is replaced; a bare cursor gets the legend on a line of its own
+			if not r.empty(): self.view.replace(edit, r, legend); continue
+			line = self.view.line(r)
+			if line.empty(): self.view.insert(edit, r.a, legend)
+			elif r.a == line.a: self.view.insert(edit, line.a, legend + "\n")
+			else: self.view.insert(edit, line.b, "\n" + legend)
 
 class SortTaskListCommand(sublime_plugin.TextCommand):
 	def run(self, edit):

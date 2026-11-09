@@ -59,6 +59,9 @@ ordered-list numbers get rewritten so `1. 2. 3.` stays ascending.
 Each icon carries its own `label`, so the legend can't drift from the toggle cycle. `legend_separator`
 sets what goes between the entries; an icon with no label is left out.
 
+The legend always gets a line of its own: on a blank line it fills it, at the start of a line it goes
+above, and anywhere else on a line it goes below. A selection is replaced by the legend.
+
 The labels are yours to reword — they're only what the legend prints, so rename them to whatever your
 files call things: `underway`, `parked`, `waiting`, `blocked`, `completed`.
 
