@@ -10,6 +10,11 @@
 		{ "icon": "✅", "label": "done" },
 	],
 
+	// alternative sort order
+	// highlighting the most critical items first
+	// assuming 🆘 = critical, ✴️ = high-pri, ⚛️ = open, 🅿️ = parked, ✅ = resolved
+	"alt_sort": ["🆘", "✴️", "⚛️", "🅿️", "✅"],
+
 	// what goes between the legend entries
 	"legend_separator": " → "
 

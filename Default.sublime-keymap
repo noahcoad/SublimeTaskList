@@ -3,5 +3,4 @@
 	// Copy the lines below to the right (user) side to enable them.
 
 	// { "keys": ["super+alt+t"], "command": "toggle_task_list" },
-	// { "keys": ["super+alt+s"], "command": "sort_task_list" },
 ]

@@ -24,6 +24,11 @@ def load_icons():
 def get_icons():
 	return [icon for icon, label in load_icons()]
 
+def get_alt_icons():
+	"""the "alt_sort" order, then any toggle icons it leaves out, so every task line still sorts as a task"""
+	alt = [i for i in sublime.load_settings("TaskList.sublime-settings").get('alt_sort') or [] if isinstance(i, str) and i]
+	return alt and alt + [i for i in get_icons() if i not in alt]
+
 def split_line(text, icons):
 	"""-> (indent, icon_index) ; icon_index is -1 when the line has no task icon"""
 	indent = text[:len(text) - len(text.lstrip(' \t'))]
@@ -99,8 +104,14 @@ class InsertTaskListLegendCommand(sublime_plugin.TextCommand):
 			else: self.view.insert(edit, line.b, "\n" + legend)
 
 class SortTaskListCommand(sublime_plugin.TextCommand):
+	done_msg, setting = "sorted", "icons"
+
+	def order(self):
+		return get_icons()
+
 	def run(self, edit):
-		icons = get_icons()
+		icons = self.order()
+		if not icons: return sublime.status_message('Task List: no "%s" order in settings' % self.setting)
 
 		# one block per selection, deduped (several cursors can land in the same list)
 		blocks = []
@@ -111,8 +122,8 @@ class SortTaskListCommand(sublime_plugin.TextCommand):
 
 		# sort back to front so earlier edits don't shift later regions
 		results = [self.sort_region(edit, r, icons) for r in sorted(blocks, key=lambda r: -r.begin())]
-		if 'reversed' in results: sublime.status_message("Task List: already sorted, so reversed the order")
-		elif 'sorted' in results: sublime.status_message("Task List: sorted")
+		if 'reversed' in results: sublime.status_message("Task List: already %s, so reversed the order" % self.done_msg)
+		elif 'sorted' in results: sublime.status_message("Task List: " + self.done_msg)
 		else: sublime.status_message("Task List: nothing to reorder")
 
 	def line_text(self, row):
@@ -233,3 +244,10 @@ class SortTaskListCommand(sublime_plugin.TextCommand):
 
 		self.view.replace(edit, region, "\n".join(out))
 		return result
+
+class AltSortTaskListCommand(SortTaskListCommand):
+	"""Sort, but in the "alt_sort" order from settings instead of the toggle cycle"""
+	done_msg, setting = "sorted (alternative)", "alt_sort"
+
+	def order(self):
+		return get_alt_icons()

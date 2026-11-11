@@ -52,6 +52,16 @@ bar says which happened, or that the cursor isn't in a task list.
 3. 🅿️ get Figma ESC                      3. ✅ order parts
 ```
 
+**Task List: Alternative Sort** works the same way but uses the `alt_sort` order from settings, for
+a second view of the same list. The default puts the most critical work first:
+
+```
+🆘 → ✴️ → ⚛️ → 🅿️ → ✅
+```
+
+Icons missing from `alt_sort` sort after the ones it lists, in toggle order, and lines with no icon
+still go last.
+
 ## Legend
 
 **Task List: Insert Legend** drops a one-line key at the cursor, so a shared file explains its own icons:
@@ -72,12 +82,22 @@ files call things: `underway`, `parked`, `waiting`, `blocked`, `completed`.
 ## Key Bindings
 
 None ship enabled, so nothing you already use gets clobbered. Open **Preferences > Package Settings >
-Task List > Key Bindings** and copy the suggested bindings from the left pane to your own on the right:
+Task List > Key Bindings** and copy the suggested binding for Toggle from the left pane to your own on
+the right:
 
 ```json
-{ "keys": ["super+alt+t"], "command": "toggle_task_list" },
-{ "keys": ["super+alt+s"], "command": "sort_task_list" }
+{ "keys": ["super+alt+t"], "command": "toggle_task_list" }
 ```
+
+Sort, Alternative Sort, and Insert Legend have no suggested keys; run them from the command palette.
+To bind one anyway, add a line with its command and whatever keys you like:
+
+| Command palette | Command |
+|---|---|
+| Task List: Toggle | `toggle_task_list` |
+| Task List: Sort | `sort_task_list` |
+| Task List: Alternative Sort | `alt_sort_task_list` |
+| Task List: Insert Legend | `insert_task_list_legend` |
 
 ## Settings
 
@@ -96,6 +116,12 @@ and the sort order, and each entry pairs an icon with the `label` the legend use
 
 The first entry is the "to do" icon you'll see most; 🟣, 🟪, and ✔️ all work well there, as does any
 other emoji. A bare string (`"icons": ["⚛️", "✅"]`) works too — it just won't appear in the legend.
+
+`alt_sort` is a plain list of icons for **Alternative Sort**:
+
+```json
+"alt_sort": ["🆘", "✴️", "⚛️", "🅿️", "✅"]
+```
 
 Both Settings and Key Bindings are in the command palette too, as *Preferences: Task List …*.
 
