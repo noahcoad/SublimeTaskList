@@ -87,6 +87,9 @@ and the sort order, and each entry pairs an icon with the `label` the legend use
 ```json
 "icons": [
 	{ "icon": "⚛️", "label": "to do" },
+	{ "icon": "🅿️", "label": "in progress" },
+	{ "icon": "✴️", "label": "highlight" },
+	{ "icon": "🆘", "label": "error" },
 	{ "icon": "✅", "label": "done" }
 ]
 ```
