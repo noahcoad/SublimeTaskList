@@ -3,10 +3,10 @@
 	// each "label" explains its icon in "Task List: Insert Legend" -- reword them to taste,
 	// e.g. underway / parked / waiting / blocked / completed
 	"icons": [
-		{ "icon": "⚛️", "label": "to do" },
-		{ "icon": "🅿️", "label": "in progress" },
-		{ "icon": "✴️", "label": "highlight" },
 		{ "icon": "🆘", "label": "error" },
+		{ "icon": "✴️", "label": "highlight" },
+		{ "icon": "🅿️", "label": "in progress" },
+		{ "icon": "⚛️", "label": "to do" },
 		{ "icon": "✅", "label": "done" }
 	],
 

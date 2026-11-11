@@ -19,7 +19,7 @@ Comment*, but it cycles through a set of task icons.
 Run **Task List: Toggle** from the command palette. Each press advances the line to the next icon, then
 clears it:
 
-⚛️ to do → 🅿️ in progress → ✴️ highlight → 🆘 error → ✅ done → *(none)*
+🆘 error → ✴️ highlight → 🅿️ in progress → ⚛️ to do → ✅ done → *(none)*
 
 Works on multiple lines and multiple selections at once, and keeps the icon after any leading
 indentation. Markdown prefixes are preserved too — the icon lands after headers, bullets, ordered
@@ -34,17 +34,21 @@ list numbers, and blockquote markers:
 
 ## Sorting
 
-**Task List: Sort** puts a list in icon order — the same order the toggle cycles through, so open work
-rises to the top and done work sinks to the bottom.
+**Task List: Sort** puts a list in icon order — the same order the toggle cycles through, so errors rise
+to the top, then highlights, in-progress, and to-do, and done work sinks to the bottom.
 
 With a selection it sorts the selected lines. With just a cursor it finds the list on its own, growing
 up and down over the run of task lines the cursor is in (or next to). Lines with no icon sort to the
 end, same-icon lines keep their relative order, indented lines travel with the item above them, and
 ordered-list numbers get rewritten so `1. 2. 3.` stays ascending.
 
+Blank lines between items don't split the list, and the gaps stay where they were. Sorting a list
+that's already in order reverses it (done work on top), so running it again flips back. The status
+bar says which happened, or that the cursor isn't in a task list.
+
 ```
-1. ⚛️ update architecture diagram        1. ⚛️ update architecture diagram
-2. ✅ order parts                   →    2. 🅿️ get Figma ESC
+1. ⚛️ update architecture diagram        1. 🅿️ get Figma ESC
+2. ✅ order parts                   →    2. ⚛️ update architecture diagram
 3. 🅿️ get Figma ESC                      3. ✅ order parts
 ```
 
@@ -53,7 +57,7 @@ ordered-list numbers get rewritten so `1. 2. 3.` stays ascending.
 **Task List: Insert Legend** drops a one-line key at the cursor, so a shared file explains its own icons:
 
 ```
-⚛️ to do → 🅿️ in progress → ✴️ highlight → 🆘 error → ✅ done
+🆘 error → ✴️ highlight → 🅿️ in progress → ⚛️ to do → ✅ done
 ```
 
 Each icon carries its own `label`, so the legend can't drift from the toggle cycle. `legend_separator`
@@ -87,7 +91,7 @@ and the sort order, and each entry pairs an icon with the `label` the legend use
 ]
 ```
 
-The first entry is the "to do" icon you'll see most; 🟣, 🟪, and ✔️ all work well there, as does any
+The "to do" icon is the one you'll see most; 🟣, 🟪, and ✔️ all work well there, as does any
 other emoji. A bare string (`"icons": ["⚛️", "✅"]`) works too — it just won't appear in the legend.
 
 Both Settings and Key Bindings are in the command palette too, as *Preferences: Task List …*.

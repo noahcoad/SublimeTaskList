@@ -107,9 +107,13 @@ class SortTaskListCommand(sublime_plugin.TextCommand):
 		for s in self.view.sel():
 			r = self.block(s, icons)
 			if r is not None and not any(b.begin() == r.begin() for b in blocks): blocks.append(r)
+		if not blocks: return sublime.status_message("Task List: no task list here")
 
 		# sort back to front so earlier edits don't shift later regions
-		for r in sorted(blocks, key=lambda r: -r.begin()): self.sort_region(edit, r, icons)
+		results = [self.sort_region(edit, r, icons) for r in sorted(blocks, key=lambda r: -r.begin())]
+		if 'reversed' in results: sublime.status_message("Task List: already sorted, so reversed the order")
+		elif 'sorted' in results: sublime.status_message("Task List: sorted")
+		else: sublime.status_message("Task List: nothing to reorder")
 
 	def line_text(self, row):
 		"""line at row, or None when row is off the ends of the buffer"""
@@ -117,6 +121,10 @@ class SortTaskListCommand(sublime_plugin.TextCommand):
 		pt = self.view.text_point(row, 0)
 		if self.view.rowcol(pt)[0] != row: return None
 		return self.view.substr(self.view.line(pt))
+
+	def is_blank(self, row):
+		t = self.line_text(row)
+		return t is not None and not t.strip()
 
 	def has_icon(self, row, icons):
 		t = self.line_text(row)
@@ -134,6 +142,22 @@ class SortTaskListCommand(sublime_plugin.TextCommand):
 		if len(indent) < len(base): return False
 		return icon_index > -1 or len(indent) > len(base)
 
+	def step(self, row, d, base, icons):
+		"""next row of the list in direction d, hopping over blank lines between items; None at the list's end"""
+		p = row + d
+		while self.is_blank(p): p += d
+		return p if self.in_run(p, base, icons) else None
+
+	def parent(self, row, icons):
+		"""nearest line above with a shallower indent, so a cursor deep in a child note finds its task"""
+		t = self.line_text(row)
+		if t is None or not t.strip(): return None
+		depth = len(split_line(t, icons)[0])
+		for p in range(row - 1, -1, -1):
+			t = self.line_text(p)
+			if t.strip() and len(split_line(t, icons)[0]) < depth: return p
+		return None
+
 	def block(self, sel, icons):
 		"""the region to sort: the selected lines, else the task list around the cursor"""
 		lines = self.view.lines(sel)
@@ -143,23 +167,32 @@ class SortTaskListCommand(sublime_plugin.TextCommand):
 		if not sel.empty() and len(lines) > 1:
 			return sublime.Region(lines[0].begin(), lines[-1].end())
 
-		# a bare cursor grows over the run of task lines it sits in, next to, or just under
+		# a bare cursor grows over the task list it sits in, next to, or just under
 		row = self.view.rowcol(sel.begin())[0]
 		if not self.has_icon(row, icons):
-			row = next((p for p in (row + 1, row - 1) if self.has_icon(p, icons)), None)
-			if row is None: return None
+			row = next((p for p in (self.parent(row, icons), row + 1, row - 1) if p is not None and self.has_icon(p, icons)), None)
+
+		# a blank line inside a list (between two of its items) still belongs to it
+		cur = self.view.rowcol(sel.begin())[0]
+		if row is None and self.is_blank(cur):
+			up, dn = cur, cur
+			while self.is_blank(up): up -= 1
+			while self.is_blank(dn): dn += 1
+			if self.has_icon(dn, icons) and self.in_run(up, self.indent_of(dn, icons), icons): row = dn
+		if row is None: return None
 
 		# the cursor's own indent sets the level being sorted; deeper lines ride along as children
 		base, top, bot = self.indent_of(row, icons), row, row
-		while self.in_run(top - 1, base, icons): top -= 1
-		while self.in_run(bot + 1, base, icons): bot += 1
+		while self.step(top, -1, base, icons) is not None: top = self.step(top, -1, base, icons)
+		while self.step(bot, 1, base, icons) is not None: bot = self.step(bot, 1, base, icons)
 
 		# don't start the block on a child line that has no parent inside it
-		while top < row and len(self.indent_of(top, icons)) > len(base): top += 1
+		while top < row and (self.is_blank(top) or len(self.indent_of(top, icons)) > len(base)): top += 1
 
 		return sublime.Region(self.view.text_point(top, 0), self.view.line(self.view.text_point(bot, 0)).end())
 
 	def sort_region(self, edit, region, icons):
+		"""sort one block in icon order, or reverse it when it's already in order -> 'sorted' | 'reversed' | 'unchanged'"""
 		# group lines into items: a line at the base indent, plus any deeper/blank lines under it
 		items, base = [], None
 		for t in [self.view.substr(r) for r in self.view.lines(region)]:
@@ -171,10 +204,24 @@ class SortTaskListCommand(sublime_plugin.TextCommand):
 				# iconless lines sort to the end
 				items.append([icon_index if icon_index > -1 else len(icons), [t]])
 
+		# blank lines trailing an item are the gap between items; they stay put by position, like the numbers
+		gaps = []
+		for item in items:
+			n = 0
+			while len(item[1]) > 1 and not item[1][-1].strip(): item[1].pop(); n += 1
+			gaps.append([""] * n)
+
 		# remember the ordered-list numbers by position, to reapply after the sort
 		nums = [ORDERED.match(item[1][0]) for item in items]
 
-		items.sort(key=lambda item: item[0])  # stable, so same-icon lines keep their order
+		# already in icon order -> reverse it (iconless lines stay at the end); stable either way
+		keys = [item[0] for item in items]
+		result = 'sorted'
+		if keys == sorted(keys):
+			items.sort(key=lambda item: (item[0] == len(icons), -item[0]))
+			result = 'reversed'
+		else: items.sort(key=lambda item: item[0])
+		if [item[0] for item in items] == keys: return 'unchanged'
 
 		out = []
 		for i, item in enumerate(items):
@@ -182,5 +229,7 @@ class SortTaskListCommand(sublime_plugin.TextCommand):
 			if m and orig: head = orig.group(1) + orig.group(2) + orig.group(3) + head[m.end():]
 			out.append(head)
 			out.extend(item[1][1:])
+			out.extend(gaps[i])
 
 		self.view.replace(edit, region, "\n".join(out))
+		return result
